@@ -1,0 +1,16 @@
+{
+  "name": "myszy",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "rm -rf dist && cp -r public dist && bun build src/main.ts --outdir dist --minify --target browser",
+    "test": "bun test",
+    "typecheck": "tsgo --noEmit",
+    "deploy": "bun run build && wrangler pages deploy dist --project-name=myszy --branch=main --commit-dirty=true"
+  },
+  "devDependencies": {
+    "@typescript/native-preview": "^7.0.0-dev.20260707.2",
+    "bun-types": "^1.4.2",
+    "playwright": "1"
+  }
+}

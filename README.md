@@ -28,6 +28,8 @@ Browser playtest (mobile Chromium, catches every item kind and checks each score
 bunx playwright install chromium
 (cd dist && python3 -m http.server 8765 &)
 node --experimental-strip-types scripts/playtest.ts http://127.0.0.1:8765/ /tmp
+node --experimental-strip-types scripts/playtest-record.ts http://127.0.0.1:8765/     # time-up ending writes the record (fake clock)
+node --experimental-strip-types scripts/playtest-nostorage.ts http://127.0.0.1:8765/  # game still ends with storage blocked
 ```
 
 ## Deploy
