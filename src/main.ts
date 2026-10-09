@@ -154,8 +154,24 @@ function render(): void {
   timeEl.textContent = String(Math.ceil(state.timeLeft));
 }
 
+// Storage can be blocked (private modes, embedded webviews); the game must still end normally.
+let memoryBest = 0;
+
 function bestScore(): number {
-  return Number(localStorage.getItem(BEST_KEY) ?? 0) || 0;
+  try {
+    return Number(localStorage.getItem(BEST_KEY) ?? 0) || 0;
+  } catch {
+    return memoryBest;
+  }
+}
+
+function saveBest(best: number): void {
+  memoryBest = best;
+  try {
+    saveBest(best);
+  } catch {
+    // Keep the in-memory record only.
+  }
 }
 
 function finish(): void {
@@ -163,7 +179,7 @@ function finish(): void {
   let best = bestScore();
   if (state.phase === "timeUp" && state.score > best) {
     best = state.score;
-    localStorage.setItem(BEST_KEY, String(best));
+    saveBest(best);
   }
   endScreen.dataset.result = state.phase;
   if (state.phase === "lost") {
