@@ -159,7 +159,7 @@ let memoryBest = 0;
 
 function bestScore(): number {
   try {
-    return Number(localStorage.getItem(BEST_KEY) ?? 0) || 0;
+    return Math.max(memoryBest, Number(localStorage.getItem(BEST_KEY) ?? 0) || 0);
   } catch {
     return memoryBest;
   }
@@ -168,7 +168,7 @@ function bestScore(): number {
 function saveBest(best: number): void {
   memoryBest = best;
   try {
-    saveBest(best);
+    localStorage.setItem(BEST_KEY, String(best));
   } catch {
     // Keep the in-memory record only.
   }
