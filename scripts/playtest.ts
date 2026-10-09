@@ -63,7 +63,10 @@ while ((await score()) < 1) {
   await page.waitForTimeout(80);
 }
 const beforeCheese = await score();
-while (!(await tapKind("cheese"))) await page.waitForTimeout(40);
+for (let i = 0; !(await tapKind("cheese")); i++) {
+  if (i > 3000) throw new Error("no cheese reachable");
+  await page.waitForTimeout(40);
+}
 await page.waitForTimeout(700);
 const afterCheese = await score();
 const endVisible = await page.isVisible("#end");
@@ -81,3 +84,4 @@ log.push(`restart: score=${await score()} endHidden=${!(await page.isVisible("#e
 console.log(log.join("\n"));
 console.log("errors:", errors.length ? errors : "none");
 await browser.close();
+if (errors.length) process.exit(1);
